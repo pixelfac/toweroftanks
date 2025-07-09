@@ -1,8 +1,3 @@
-# ProtoController v1.0 by Brackeys
-# CC0 License
-# Intended for rapid prototyping of first-person games.
-# Happy prototyping!
-
 extends CharacterBody3D
 
 @export var can_move : bool = true
@@ -12,6 +7,8 @@ extends CharacterBody3D
 @export_group("Speeds")
 @export var base_speed : float = 7.0
 @export var sprint_speed : float = 10.0
+# value in range (0,1], 1 being instant decel
+@export var DECELERATION : float = 0.25
 
 @export_group("Input Actions")
 @export var input_left : String = "move_left"
@@ -42,11 +39,11 @@ func _physics_process(delta: float) -> void:
 	# Apply desired movement to velocity
 	if can_move:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
-		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		var move_dir := input_dir.y
 		if move_dir:
-			velocity.x = current_speed
+			velocity.z = current_speed * move_dir
 		else:
-			velocity.x = move_toward(velocity.x, 0, 0.25)
+			velocity.z = move_toward(velocity.z, 0, DECELERATION)
 	else:
 		velocity.x = 0
 		velocity.y = 0
