@@ -9,6 +9,7 @@ extends CharacterBody3D
 @export var sprint_speed : float = 10.0
 # value in range (0,1], 1 being instant decel
 @export var DECELERATION : float = 0.25
+@export var TURN_SPEED : float = 0.05
 
 @export_group("Input Actions")
 @export var input_left : String = "move_left"
@@ -35,15 +36,15 @@ func _physics_process(delta: float) -> void:
 	else:
 		current_speed = base_speed
 		
-
-	# Apply desired movement to velocity
 	if can_move:
-		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
-		var move_dir := input_dir.y
+		var input_dir := Input.get_vector(input_right, input_left, input_back, input_forward)
+		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if move_dir:
-			velocity.z = current_speed * move_dir
+			velocity.x = move_dir.x * current_speed
+			velocity.z = move_dir.z * current_speed
 		else:
-			velocity.z = move_toward(velocity.z, 0, DECELERATION)
+			velocity.x = move_toward(velocity.x, 0, current_speed)
+			velocity.z = move_toward(velocity.z, 0, current_speed)
 	else:
 		velocity.x = 0
 		velocity.y = 0
