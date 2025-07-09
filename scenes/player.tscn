@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4tks4tj5e8l1"]
+[gd_scene load_steps=7 format=3 uid="uid://c4tks4tj5e8l1"]
 
 [ext_resource type="Script" uid="uid://b83s5t6oo25ku" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Material" uid="uid://druwtqb14cvl6" path="res://assets/materials/player_tank.tres" id="2_g2els"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3vyb7"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_g2els"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3vyb7"]
-albedo_color = Color(0.345555, 0.560059, 0.7873, 1)
+[sub_resource type="SphereMesh" id="SphereMesh_3vyb7"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3vyb7"]
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -17,6 +19,18 @@ script = ExtResource("1_g2els")
 shape = SubResource("BoxShape3D_3vyb7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, -0.3, 0)
 mesh = SubResource("BoxMesh_g2els")
 skeleton = NodePath("../CollisionShape3D")
-surface_material_override/0 = SubResource("StandardMaterial3D_3vyb7")
+surface_material_override/0 = ExtResource("2_g2els")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("SphereMesh_3vyb7")
+skeleton = NodePath("../MeshInstance3D")
+surface_material_override/0 = ExtResource("2_g2els")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(4.01244e-16, -2.62268e-08, -0.2, -0.21, -2.62268e-08, 0, -9.17939e-09, 0.6, -8.74228e-09, 0, 0.092684, 0.324393)
+mesh = SubResource("CylinderMesh_3vyb7")
+surface_material_override/0 = ExtResource("2_g2els")
