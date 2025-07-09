@@ -30,7 +30,6 @@ extends CharacterBody3D
 ## Name of Input Action to Sprint.
 @export var input_sprint : String = "sprint"
 
-var mouse_captured : bool = false
 var move_speed : float = 0.0
 
 ## IMPORTANT REFERENCES
@@ -38,13 +37,6 @@ var move_speed : float = 0.0
 
 func _ready() -> void:
 	check_input_mappings()
-
-func _unhandled_input(_event: InputEvent) -> void:
-	# Mouse capturing
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		capture_mouse()
-	if Input.is_key_pressed(KEY_ESCAPE):
-		release_mouse()
 	
 func _physics_process(delta: float) -> void:
 	# Apply gravity to velocity
@@ -74,16 +66,6 @@ func _physics_process(delta: float) -> void:
 	
 	# Use velocity to actually move
 	move_and_slide()
-
-func capture_mouse():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	mouse_captured = true
-
-
-func release_mouse():
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	mouse_captured = false
-
 
 ## Checks if some Input Actions haven't been created.
 ## Disables functionality accordingly.
