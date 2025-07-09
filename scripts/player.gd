@@ -34,13 +34,12 @@ var mouse_captured : bool = false
 var move_speed : float = 0.0
 
 ## IMPORTANT REFERENCES
-@onready var head: Node3D = $Camera3D
 @onready var collider: CollisionShape3D = $CollisionShape3D
 
 func _ready() -> void:
 	check_input_mappings()
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	# Mouse capturing
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
