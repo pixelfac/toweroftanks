@@ -31,6 +31,6 @@ skeleton = NodePath("../MeshInstance3D")
 surface_material_override/0 = ExtResource("2_g2els")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(4.01244e-16, -2.62268e-08, -0.2, -0.21, -2.62268e-08, 0, -9.17939e-09, 0.6, -8.74228e-09, 0, 0.092684, 0.324393)
+transform = Transform3D(4.01244e-16, -2.62268e-08, -0.2, -0.21, -2.62268e-08, 0, -9.17939e-09, 0.6, -8.74228e-09, 0, 0.092684, -0.30761)
 mesh = SubResource("CylinderMesh_3vyb7")
 surface_material_override/0 = ExtResource("2_g2els")

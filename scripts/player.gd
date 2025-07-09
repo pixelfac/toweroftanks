@@ -37,17 +37,22 @@ func _physics_process(delta: float) -> void:
 		current_speed = base_speed
 		
 	if can_move:
-		var input_dir := Input.get_vector(input_right, input_left, input_back, input_forward)
-		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
+		var move_dir := Vector3(input_dir.x, 0, input_dir.y).normalized()
+		print("rotation: ", rotation)
+		print("move_dir: ", move_dir)
 		if move_dir:
-			velocity.x = move_dir.x * current_speed
-			velocity.z = move_dir.z * current_speed
+			#velocity.x = move_dir.x * current_speed
+			#velocity.z = move_dir.z * current_speed
+			var move_dir_angle = Vector3.FORWARD.signed_angle_to(move_dir, Vector3.UP)
+			print(move_dir_angle)
+			rotation.y = lerp(rotation.y, move_dir_angle, TURN_SPEED)
 		else:
 			velocity.x = move_toward(velocity.x, 0, current_speed)
 			velocity.z = move_toward(velocity.z, 0, current_speed)
+			
 	else:
-		velocity.x = 0
-		velocity.y = 0
+		velocity = Vector3.ZERO
 	
 	# Use velocity to actually move
 	move_and_slide()
