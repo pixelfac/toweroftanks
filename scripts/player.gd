@@ -9,7 +9,7 @@ extends CharacterBody3D
 @export var sprint_speed : float = 10.0
 # value in range (0,1], 1 being instant decel
 @export var DECELERATION : float = 0.25
-@export var TURN_SPEED : float = 0.05
+@export var TURN_SPEED : float = 0.2
 
 @export_group("Input Actions")
 @export var input_left : String = "move_left"
@@ -42,15 +42,10 @@ func _physics_process(delta: float) -> void:
 		print("rotation: ", rotation)
 		print("move_dir: ", move_dir)
 		if move_dir:
-			#velocity.x = move_dir.x * current_speed
-			#velocity.z = move_dir.z * current_speed
-			var move_dir_angle = Vector3.FORWARD.signed_angle_to(move_dir, Vector3.UP)
-			print(move_dir_angle)
-			rotation.y = lerp(rotation.y, move_dir_angle, TURN_SPEED)
+			look_at(global_position + move_dir)
+			velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * current_speed
 		else:
-			velocity.x = move_toward(velocity.x, 0, current_speed)
-			velocity.z = move_toward(velocity.z, 0, current_speed)
-			
+			velocity = Vector3.ZERO
 	else:
 		velocity = Vector3.ZERO
 	
