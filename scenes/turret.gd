@@ -11,8 +11,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	print("camera.position", camera.position)
-	print("pos.y:", cannon.global_position.y)
 	var plane = Plane(Vector3.UP, cannon.global_position.y)
 	var mouse_position := get_viewport().get_mouse_position()
 	var ray_origin := camera.project_ray_origin(mouse_position)
@@ -20,3 +18,6 @@ func _process(_delta: float) -> void:
 	var intersect = plane.intersects_ray(ray_origin, ray_dir)
 	if intersect:
 		look_at(intersect)
+
+func shoot():
+	print("shooting bullet")

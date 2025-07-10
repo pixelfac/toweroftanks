@@ -45,8 +45,8 @@ func _physics_process(delta: float) -> void:
 	if can_move:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := Vector3(input_dir.x, 0, input_dir.y).normalized()
-		print("rotation: ", rotation)
-		print("move_dir: ", move_dir)
+		#print("rotation: ", rotation)
+		#print("move_dir: ", move_dir)
 		if move_dir:
 			look_at(global_position + move_dir)
 			velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * current_speed
@@ -54,6 +54,10 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector3.ZERO
 	else:
 		velocity = Vector3.ZERO
+		
+	if can_shoot:
+		if Input.is_action_just_pressed("PrimaryAttack"):
+			turretNode.shoot()
 	
 	# Use velocity to actually move
 	move_and_slide()
