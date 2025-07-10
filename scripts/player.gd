@@ -3,6 +3,11 @@ extends CharacterBody3D
 @export var can_move : bool = true
 @export var has_gravity : bool = true
 @export var can_sprint : bool = false
+@export var can_shoot : bool = true
+
+
+@onready var turretNode := $Turret
+@export var camera : Camera3D
 
 @export_group("Speeds")
 @export var base_speed : float = 7.0
@@ -21,9 +26,10 @@ extends CharacterBody3D
 var current_speed : float = 0.0
 
 
+
 func _ready() -> void:
 	check_input_mappings()
-	
+
 func _physics_process(delta: float) -> void:
 	# Apply gravity to velocity
 	if has_gravity:
