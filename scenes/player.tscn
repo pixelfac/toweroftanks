@@ -42,3 +42,7 @@ surface_material_override/0 = ExtResource("2_g2els")
 
 [node name="BulletOrigin" type="Node3D" parent="Turret"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.190675, -0.938815)
+
+[node name="ShootCooldown" type="Timer" parent="Turret"]
+process_callback = 0
+one_shot = true

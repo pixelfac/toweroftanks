@@ -3,8 +3,10 @@ extends MeshInstance3D
 var camera : Camera3D
 @onready var cannon := $Cannon
 @onready var bullet_origin := $BulletOrigin
-@onready var root := get_tree().root.get_child(0)
+@onready var shoot_cooldown_timer := $ShootCooldown
+@onready var scene_root := get_tree().root.get_child(0)
 @onready var bullet := preload("res://scenes/bullet.tscn")
+var FIRE_RATE : float = 0.3
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,10 +26,17 @@ func _process(_delta: float) -> void:
 		rotation.z = 0
 
 func shoot():
+	if !shoot_cooldown_timer.is_stopped():
+		print("shot cooldown not expired")
+		return
+		
 	print("shooting bullet")
+	#create bullet object
 	var instance := bullet.instantiate()
 	instance.spawn_pos = bullet_origin.global_position
 	instance.spawn_rot = bullet_origin.global_rotation
-	root.add_child.call_deferred(instance)
+	scene_root.add_child.call_deferred(instance)
+	
+	shoot_cooldown_timer.start(FIRE_RATE)
 	
 	
