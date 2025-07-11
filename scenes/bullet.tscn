@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://ygw7svvxtlmo"]
+
+[ext_resource type="Material" uid="uid://cskntix4jh6yi" path="res://assets/materials/player_bullet.tres" id="1_mkf8s"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h1aey"]
+
+[node name="RigidBody3D" type="RigidBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_h1aey")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0, 0)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.4, 0, 0, 0, 0.224, 0, 0, 0, 0.4, 0, 0, 0)
+sides = 12
+material = ExtResource("1_mkf8s")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.2, 0)
+rings = 12
+material = ExtResource("1_mkf8s")
