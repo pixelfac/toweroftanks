@@ -79,7 +79,7 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 		
 	if can_shoot:
-		if Input.is_action_just_pressed("PrimaryAttack"):
+		if Input.is_action_pressed("PrimaryAttack"):
 			turretNode.shoot()
 	
 	# Use velocity to actually move
