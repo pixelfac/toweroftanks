@@ -1,10 +1,13 @@
 extends CharacterBody3D
 
+# the direction the tank is moving, defined in rotation around y axis, in radians
+var moving_direction : float = 0
+var is_reversing : bool = false
+
 @export var can_move : bool = true
 @export var has_gravity : bool = true
 @export var can_sprint : bool = false
 @export var can_shoot : bool = true
-
 
 @onready var turretNode := $Turret
 @export var camera : Camera3D
@@ -43,13 +46,33 @@ func _physics_process(delta: float) -> void:
 		current_speed = base_speed
 		
 	if can_move:
-		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
-		var move_dir := Vector3(input_dir.x, 0, input_dir.y).normalized()
+		var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
+		var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
 		#print("rotation: ", rotation)
-		#print("move_dir: ", move_dir)
-		if move_dir:
-			look_at(global_position + move_dir)
-			velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * current_speed
+		#print("move_dir_vector: ", move_dir_vector)
+		if new_move_dir_vector:
+			# get vector of curr moving direction
+			var moving_dir_vector := Vector3.FORWARD.rotated(Vector3.UP, moving_direction)
+			# get angle between new and previous directions
+			var relative_dir_change := moving_dir_vector.signed_angle_to(new_move_dir_vector, Vector3.UP)
+			print("relative_dir_change:", relative_dir_change)
+			if (relative_dir_change > (PI/2 + 0.1) or relative_dir_change < (-PI/2 - 0.1)):
+				# if rotation to face new_moving_dir > 90 degrees, switch to moving in reverse
+				var new_reversing_state := !is_reversing
+				if new_reversing_state != is_reversing:
+					relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
+					is_reversing = !is_reversing
+			
+			print("relative_dir_change:", relative_dir_change)
+			print("is_reversing:", is_reversing)
+			rotate_y(relative_dir_change)
+			if is_reversing:
+				moving_direction = (PI if rotation.y > 0 else -PI) - rotation.y
+			else:
+				moving_direction = rotation.y
+			print("moving_direction:", moving_direction)
+			velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * (-1 if is_reversing else 1) * current_speed
+			print("velocity:", velocity)
 		else:
 			velocity = Vector3.ZERO
 	else:
