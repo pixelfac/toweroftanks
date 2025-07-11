@@ -27,7 +27,6 @@ func _process(_delta: float) -> void:
 
 func shoot():
 	if !shoot_cooldown_timer.is_stopped():
-		print("shot cooldown not expired")
 		return
 		
 	print("shooting bullet")

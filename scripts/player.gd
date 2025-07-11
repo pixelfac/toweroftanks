@@ -55,7 +55,6 @@ func _physics_process(delta: float) -> void:
 			var moving_dir_vector := Vector3.FORWARD.rotated(Vector3.UP, moving_direction)
 			# get angle between new and previous directions
 			var relative_dir_change := moving_dir_vector.signed_angle_to(new_move_dir_vector, Vector3.UP)
-			print("relative_dir_change:", relative_dir_change)
 			if (relative_dir_change > (PI/2 + 0.1) or relative_dir_change < (-PI/2 - 0.1)):
 				# if rotation to face new_moving_dir > 90 degrees, switch to moving in reverse
 				var new_reversing_state := !is_reversing
@@ -63,16 +62,12 @@ func _physics_process(delta: float) -> void:
 					relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
 					is_reversing = !is_reversing
 			
-			print("relative_dir_change:", relative_dir_change)
-			print("is_reversing:", is_reversing)
 			rotate_y(relative_dir_change * TURN_SPEED)
 			if is_reversing:
 				moving_direction = (PI if rotation.y < 0 else -PI) + rotation.y
 			else:
 				moving_direction = rotation.y
-			print("moving_direction:", moving_direction)
 			velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * (-1 if is_reversing else 1) * current_speed
-			print("velocity:", velocity)
 		else:
 			velocity = Vector3.ZERO
 	else:
