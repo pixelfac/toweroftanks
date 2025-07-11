@@ -65,9 +65,9 @@ func _physics_process(delta: float) -> void:
 			
 			print("relative_dir_change:", relative_dir_change)
 			print("is_reversing:", is_reversing)
-			rotate_y(relative_dir_change)
+			rotate_y(relative_dir_change * TURN_SPEED)
 			if is_reversing:
-				moving_direction = (PI if rotation.y > 0 else -PI) - rotation.y
+				moving_direction = (PI if rotation.y < 0 else -PI) + rotation.y
 			else:
 				moving_direction = rotation.y
 			print("moving_direction:", moving_direction)
