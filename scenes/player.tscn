@@ -37,3 +37,6 @@ transform = Transform3D(-3.55271e-15, -1.96701e-08, 0.25, 0.2625, -1.96701e-08, 
 mesh = SubResource("CylinderMesh_3vyb7")
 skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_g2els")
+
+[node name="BulletOrigin" type="Node3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.190675, -0.938815)

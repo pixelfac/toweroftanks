@@ -2,6 +2,9 @@ extends MeshInstance3D
 
 var camera : Camera3D
 @onready var cannon := $Cannon
+@onready var bullet_origin := $BulletOrigin
+@onready var root := get_tree().root.get_child(0)
+@onready var bullet := preload("res://scenes/bullet.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -22,3 +25,9 @@ func _process(_delta: float) -> void:
 
 func shoot():
 	print("shooting bullet")
+	var instance := bullet.instantiate()
+	instance.spawn_pos = bullet_origin.global_position
+	instance.spawn_rot = bullet_origin.global_rotation
+	root.add_child.call_deferred(instance)
+	
+	
