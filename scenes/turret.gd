@@ -18,6 +18,8 @@ func _process(_delta: float) -> void:
 	var intersect = plane.intersects_ray(ray_origin, ray_dir)
 	if intersect:
 		look_at(intersect)
+		rotation.x = 0
+		rotation.z = 0
 
 func shoot():
 	print("shooting bullet")
