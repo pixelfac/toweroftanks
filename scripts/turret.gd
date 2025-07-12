@@ -7,6 +7,8 @@ var camera : Camera3D
 @onready var scene_root := get_tree().root.get_child(0)
 @onready var bullet := preload("res://scenes/bullet.tscn")
 var FIRE_RATE : float = 0.3
+var PROJ_SPEED : float = 6
+var MAX_BOUNCES : int = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -32,8 +34,7 @@ func shoot():
 	print("shooting bullet")
 	#create bullet object
 	var instance := bullet.instantiate()
-	instance.spawn_pos = bullet_origin.global_position
-	instance.spawn_rot = bullet_origin.global_rotation
+	instance.set_start_state(bullet_origin.global_position, bullet_origin.global_rotation, PROJ_SPEED, MAX_BOUNCES)
 	scene_root.add_child.call_deferred(instance)
 	
 	shoot_cooldown_timer.start(FIRE_RATE)

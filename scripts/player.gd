@@ -3,9 +3,9 @@ extends CharacterBody3D
 # the direction the tank is moving, defined in rotation around y axis, in radians
 var moving_direction : float = 0
 var is_reversing : bool = false
+var current_speed : float = 0.0
 
 @export var can_move : bool = true
-@export var has_gravity : bool = true
 @export var can_sprint : bool = false
 @export var can_shoot : bool = true
 
@@ -26,60 +26,57 @@ var is_reversing : bool = false
 @export var input_back : String = "move_down"
 @export var input_sprint : String = "sprint"
 
-var current_speed : float = 0.0
-
-
-
 func _ready() -> void:
 	check_input_mappings()
 
-func _physics_process(delta: float) -> void:
-	# Apply gravity to velocity
-	if has_gravity:
-		if not is_on_floor():
-			velocity += get_gravity() * delta
+func _physics_process(_delta: float) -> void:
+	compute_move()
+	compute_shoot()
+	
+	move_and_slide()
 
-	# Modify speed based on sprinting
+func compute_move() -> void:
 	if can_sprint and Input.is_action_pressed(input_sprint):
 		current_speed = sprint_speed
 	else:
 		current_speed = base_speed
+	
+	if not can_move:
+		velocity = velocity.lerp(Vector3.ZERO, TURN_SPEED)
+		return
 		
-	if can_move:
-		var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
-		var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
-		#print("rotation: ", rotation)
-		#print("move_dir_vector: ", move_dir_vector)
-		if new_move_dir_vector:
-			# get vector of curr moving direction
-			var moving_dir_vector := Vector3.FORWARD.rotated(Vector3.UP, moving_direction)
-			# get angle between new and previous directions
-			var relative_dir_change := moving_dir_vector.signed_angle_to(new_move_dir_vector, Vector3.UP)
-			if (relative_dir_change > (PI/2 + 0.1) or relative_dir_change < (-PI/2 - 0.1)):
-				# if rotation to face new_moving_dir > 90 degrees, switch to moving in reverse
-				var new_reversing_state := !is_reversing
-				if new_reversing_state != is_reversing:
-					relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
-					is_reversing = !is_reversing
-			
-			rotate_y(relative_dir_change * TURN_SPEED)
-			if is_reversing:
-				moving_direction = (PI if rotation.y < 0 else -PI) + rotation.y
-			else:
-				moving_direction = rotation.y
-			velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * (-1 if is_reversing else 1) * current_speed
-		else:
-			velocity = Vector3.ZERO
+	var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
+	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
+	
+	if not new_move_dir_vector:
+		velocity = velocity.lerp(Vector3.ZERO, TURN_SPEED)
+		return
+	
+	# get vector of curr moving direction
+	var moving_dir_vector := Vector3.FORWARD.rotated(Vector3.UP, moving_direction)
+	# get angle between new and previous directions
+	var relative_dir_change := moving_dir_vector.signed_angle_to(new_move_dir_vector, Vector3.UP)
+	if (relative_dir_change > (PI/2 + 0.1) or relative_dir_change < (-PI/2 - 0.1)):
+		# if rotation to face new_moving_dir > 90 degrees, switch to moving in reverse
+		var new_reversing_state := !is_reversing
+		if new_reversing_state != is_reversing:
+			relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
+			is_reversing = !is_reversing
+	
+	rotate_y(relative_dir_change * TURN_SPEED)
+	
+	if is_reversing:
+		moving_direction = (PI if rotation.y < 0 else -PI) + rotation.y
 	else:
-		velocity = Vector3.ZERO
+		moving_direction = rotation.y
 		
+	velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * (-1 if is_reversing else 1) * current_speed
+	
+func compute_shoot() -> void:
 	if can_shoot:
 		if Input.is_action_pressed("PrimaryAttack"):
 			turretNode.shoot()
 	
-	# Use velocity to actually move
-	move_and_slide()
-
 ## Checks if some Input Actions haven't been created.
 ## Disables functionality accordingly.
 func check_input_mappings():
