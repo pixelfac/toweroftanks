@@ -10,14 +10,8 @@ var current_speed : float = 0.0
 @export var can_shoot : bool = true
 
 @onready var turretNode := $Turret
-@export var camera : Camera3D
 
-@export_group("Speeds")
-@export var base_speed : float = 7.0
-@export var sprint_speed : float = 10.0
-# value in range (0,1], 1 being instant decel
-@export var DECELERATION : float = 0.25
-@export var TURN_SPEED : float = 0.2
+@onready var player_tank_data = preload("res://data/player_tank_data.tres")
 
 @export_group("Input Actions")
 @export var input_left : String = "move_left"
@@ -37,19 +31,19 @@ func _physics_process(_delta: float) -> void:
 
 func compute_move() -> void:
 	if can_sprint and Input.is_action_pressed(input_sprint):
-		current_speed = sprint_speed
+		current_speed = player_tank_data.boost_speed
 	else:
-		current_speed = base_speed
+		current_speed = player_tank_data.base_speed
 	
 	if not can_move:
-		velocity = velocity.lerp(Vector3.ZERO, TURN_SPEED)
+		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
 		return
 		
 	var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
 	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
 	
 	if not new_move_dir_vector:
-		velocity = velocity.lerp(Vector3.ZERO, TURN_SPEED)
+		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
 		return
 	
 	# get vector of curr moving direction
@@ -63,7 +57,7 @@ func compute_move() -> void:
 			relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
 			is_reversing = !is_reversing
 	
-	rotate_y(relative_dir_change * TURN_SPEED)
+	rotate_y(relative_dir_change * player_tank_data.turn_speed)
 	
 	if is_reversing:
 		moving_direction = (PI if rotation.y < 0 else -PI) + rotation.y

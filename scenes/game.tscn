@@ -31,12 +31,16 @@ shadow_enabled = true
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.173648, 0.984808, 0, -0.984808, 0.173648, 0, 15, 3.2)
 
-[node name="Player" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("1_uwrxv")]
+[node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.38614, 0.616389, 5.88788)
+can_move = true
 can_sprint = true
-camera = NodePath("../Camera3D")
-base_speed = 2.0
-sprint_speed = 5.0
+can_shoot = true
+input_left = "move_left"
+input_right = "move_right"
+input_forward = "move_up"
+input_back = "move_down"
+input_sprint = "sprint"
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(85.3689, 0, 0, 0, 1, 0, 0, 0, 53.664, 0, -0.5, 0)

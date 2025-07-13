@@ -13,7 +13,7 @@ config_version=5
 config/name="TowerOfTanks"
 run/main_scene="uid://bdw1oucq0pq28"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://assets/icon.svg"
 
 [dotnet]
 
