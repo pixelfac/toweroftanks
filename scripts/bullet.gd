@@ -3,22 +3,21 @@ extends CharacterBody3D
 var direction : float
 var spawn_pos : Vector3
 var spawn_rot : Vector3
-var PROJECTILE_SPEED : float
+var proj_speed : float
 var init_bounces : int
 var current_bounces : int
 
-func set_start_state(spos : Vector3, srot : Vector3, projspeed : float, bounces : int) -> void:
+func set_start_state(spos : Vector3, srot : Vector3, data : BulletData) -> void:
 	spawn_pos = spos
 	spawn_rot = srot
-	PROJECTILE_SPEED = projspeed
-	init_bounces = bounces
+	proj_speed = data.projectile_speed
+	init_bounces = data.bounces
 
 func _ready() -> void:
-	print("ready")
 	global_position = spawn_pos
 	global_rotation = spawn_rot
 	current_bounces = init_bounces
-	velocity = Vector3.FORWARD.rotated(Vector3.UP, global_rotation.y) * PROJECTILE_SPEED
+	velocity = Vector3.FORWARD.rotated(Vector3.UP, global_rotation.y) * proj_speed
 
 func _physics_process(delta: float) -> void:
 	var collision_data := move_and_collide(velocity * delta)
