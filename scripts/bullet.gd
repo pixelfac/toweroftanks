@@ -40,6 +40,7 @@ func collide(other_collision_layer : int, collision_data : KinematicCollision3D)
 		16: # (layer 5  - 1)^2 = 15
 			print("direct hit!")
 			collision_data.get_collider().queue_free()
+			
 			destroy()
 		_:
 			print("uncaught collision")

@@ -1,8 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://n05yjp8vh0co"]
 
-[sub_resource type="GDScript" id="GDScript_p1s84"]
-script/source = "extends StaticBody3D
-"
+[ext_resource type="Script" uid="uid://4nsxcnltxjwd" path="res://scenes/pickup.gd" id="1_pg2rt"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_pg2rt"]
 
@@ -14,7 +12,7 @@ albedo_color = Color(1, 0.407843, 0.388235, 1)
 [node name="pickup" type="StaticBody3D"]
 collision_layer = 16
 collision_mask = 4
-script = SubResource("GDScript_p1s84")
+script = ExtResource("1_pg2rt")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_pg2rt")

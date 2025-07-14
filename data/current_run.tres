@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RunData" load_steps=3 format=3 uid="uid://burpifxucsbso"]
+
+[ext_resource type="Resource" uid="uid://disau2jq3bpre" path="res://data/player_tank_data.tres" id="1_n8ph2"]
+[ext_resource type="Script" uid="uid://kgudkttjvchd" path="res://scripts/custom_resources/run_data.gd" id="1_qo262"]
+
+[resource]
+script = ExtResource("1_qo262")
+player_tank_data = ExtResource("1_n8ph2")
+metadata/_custom_type_script = "uid://kgudkttjvchd"
