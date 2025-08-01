@@ -21,7 +21,7 @@ script = ExtResource("1_g2els")
 can_sprint = true
 
 [node name="CameraPosTarget" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 5, 2)
+transform = Transform3D(0.707107, 0.683013, -0.183013, 0, 0.258819, 0.965926, 0.707107, -0.683013, 0.183013, -2, 10, 2)
 script = ExtResource("2_dqkch")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

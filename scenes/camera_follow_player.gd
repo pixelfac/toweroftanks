@@ -9,3 +9,4 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	global_position = global_position.lerp(camera_target.global_position, LERP_SPEED)
+	global_rotation = global_rotation.lerp(camera_target.rotation, LERP_SPEED)
