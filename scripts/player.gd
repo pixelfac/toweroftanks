@@ -40,7 +40,7 @@ func compute_move() -> void:
 		return
 		
 	var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
-	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
+	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized().rotated(Vector3.UP,-PI/4)
 	
 	if not new_move_dir_vector:
 		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
