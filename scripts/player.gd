@@ -5,12 +5,12 @@ var moving_direction : float = 0
 var is_reversing : bool = false
 var current_speed : float = 0.0
 
+@export_group("Action Toggles")
 @export var can_move : bool = true
 @export var can_sprint : bool = false
 @export var can_shoot : bool = true
 
 @onready var turretNode := $Turret
-
 @onready var player_tank_data = preload("res://data/player_tank_data.tres")
 
 @export_group("Input Actions")
@@ -29,35 +29,26 @@ func _physics_process(_delta: float) -> void:
 	
 	move_and_slide()
 
+# sets player velocity based on state
 func compute_move() -> void:
+	if not can_move:
+		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
+		return
+	
 	if can_sprint and Input.is_action_pressed(input_sprint):
 		current_speed = player_tank_data.boost_speed
 	else:
 		current_speed = player_tank_data.base_speed
 	
-	if not can_move:
-		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
-		return
-		
 	var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
-	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized().rotated(Vector3.UP,-PI/4)
+	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
+	new_move_dir_vector = new_move_dir_vector.rotated(Vector3.UP,-PI/4) #rotate movement 45 degrees to account for isometric camera view
 	
-	if not new_move_dir_vector:
+	if not new_move_dir_vector: #if no data received from Inputs
 		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
 		return
 	
-	# get vector of curr moving direction
-	var moving_dir_vector := Vector3.FORWARD.rotated(Vector3.UP, moving_direction)
-	# get angle between new and previous directions
-	var relative_dir_change := moving_dir_vector.signed_angle_to(new_move_dir_vector, Vector3.UP)
-	if (relative_dir_change > (PI/2 + 0.1) or relative_dir_change < (-PI/2 - 0.1)):
-		# if rotation to face new_moving_dir > 90 degrees, switch to moving in reverse
-		var new_reversing_state := !is_reversing
-		if new_reversing_state != is_reversing:
-			relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
-			is_reversing = !is_reversing
-	
-	rotate_y(relative_dir_change * player_tank_data.turn_speed)
+	compute_rotation(new_move_dir_vector)
 	
 	if is_reversing:
 		moving_direction = (PI if rotation.y < 0 else -PI) + rotation.y
@@ -65,11 +56,23 @@ func compute_move() -> void:
 		moving_direction = rotation.y
 		
 	velocity = Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * (-1 if is_reversing else 1) * current_speed
+
+# sets player rotation based on state
+func compute_rotation(move_dir: Vector3) -> void:
+	# get vector of curr moving direction
+	var moving_dir_vector := Vector3.FORWARD.rotated(Vector3.UP, moving_direction)
+	# get angle between new and previous directions
+	var relative_dir_change := moving_dir_vector.signed_angle_to(move_dir, Vector3.UP)
+	if (relative_dir_change > (PI/2 + 0.1) or relative_dir_change < (-PI/2 - 0.1)):
+		# if rotation to face new_moving_dir > 90 degrees, switch to moving in reverse
+		relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
+		is_reversing = !is_reversing
 	
+	rotate_y(relative_dir_change * player_tank_data.turn_speed)
+
 func compute_shoot() -> void:
-	if can_shoot:
-		if Input.is_action_pressed("PrimaryAttack"):
-			turretNode.shoot()
+	if can_shoot and Input.is_action_pressed("PrimaryAttack"):
+		turretNode.shoot()
 	
 ## Checks if some Input Actions haven't been created.
 ## Disables functionality accordingly.
