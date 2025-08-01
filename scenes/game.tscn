@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://bdw1oucq0pq28"]
+[gd_scene load_steps=11 format=3 uid="uid://bdw1oucq0pq28"]
 
+[ext_resource type="Script" uid="uid://butwcpn3hqci8" path="res://scenes/camera_follow_player.gd" id="1_p57ef"]
 [ext_resource type="PackedScene" uid="uid://c4tks4tj5e8l1" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://n05yjp8vh0co" path="res://scenes/pickup.tscn" id="2_yqjtg"]
 [ext_resource type="Material" uid="uid://37rjw5galcw2" path="res://assets/materials/ground.tres" id="3_lnu2h"]
@@ -22,6 +23,11 @@ tonemap_mode = 2
 
 [node name="Game" type="Node3D"]
 
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("player_node")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 7.9, 3.9)
+script = ExtResource("1_p57ef")
+player_node = NodePath("../Player")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lbhrr")
 
@@ -34,9 +40,6 @@ offset_right = 311.0
 offset_bottom = 122.0
 text = "Free me"
 script = ExtResource("5_iywne")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.173648, 0.984808, 0, -0.984808, 0.173648, 0, 15, 3.2)
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.38614, 0.616389, 5.88788)

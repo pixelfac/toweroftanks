@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4tks4tj5e8l1"]
+[gd_scene load_steps=9 format=3 uid="uid://c4tks4tj5e8l1"]
 
 [ext_resource type="Script" uid="uid://b83s5t6oo25ku" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://ctobfsf0risqn" path="res://scenes/camera_pos_target.gd" id="2_dqkch"]
 [ext_resource type="Material" uid="uid://druwtqb14cvl6" path="res://assets/materials/player_tank.tres" id="2_g2els"]
 [ext_resource type="Script" uid="uid://bsgre2mgicxh8" path="res://scripts/turret.gd" id="3_qhqgy"]
 
@@ -18,6 +19,10 @@ collision_layer = 2
 collision_mask = 13
 script = ExtResource("1_g2els")
 can_sprint = true
+
+[node name="CameraPosTarget" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 5, 2)
+script = ExtResource("2_dqkch")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1.34339, 0, -0.3, 0)
