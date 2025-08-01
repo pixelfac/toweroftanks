@@ -7,15 +7,14 @@ var camera : Camera3D
 @onready var scene_root := get_tree().root.get_child(0)
 @onready var bullet := preload("res://scenes/bullet.tscn")
 @onready var player_tank_data := preload("res://data/player_tank_data.tres")
+@onready var plane = Plane(Vector3.UP, cannon.global_position.y)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	camera = get_viewport().get_camera_3d()
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	var plane = Plane(Vector3.UP, cannon.global_position.y)
 	var mouse_position := get_viewport().get_mouse_position()
 	var ray_origin := camera.project_ray_origin(mouse_position)
 	var ray_dir := camera.project_ray_normal(mouse_position)

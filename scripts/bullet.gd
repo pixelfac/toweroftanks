@@ -7,6 +7,7 @@ var proj_speed : float
 var init_bounces : int
 var current_bounces : int
 
+# initialize function
 func set_start_state(spos : Vector3, srot : Vector3, data : BulletData) -> void:
 	spawn_pos = spos
 	spawn_rot = srot
