@@ -42,7 +42,7 @@ func compute_move() -> void:
 	
 	var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
 	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
-	new_move_dir_vector = new_move_dir_vector.rotated(Vector3.UP,-PI/4) #rotate movement 45 degrees to account for isometric camera view
+	#new_move_dir_vector = new_move_dir_vector.rotated(Vector3.UP,-PI/4) #rotate movement 45 degrees to account for isometric camera view
 	
 	if not new_move_dir_vector: #if no data received from Inputs
 		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
