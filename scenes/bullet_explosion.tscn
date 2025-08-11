@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dq8paxghm3jli"]
+[gd_scene load_steps=7 format=3 uid="uid://dq8paxghm3jli"]
 
+[ext_resource type="Script" uid="uid://lxm1fvakweam" path="res://scenes/bullet_explosion.gd" id="1_7ype4"]
 [ext_resource type="Material" uid="uid://b1kflf0rjg0cj" path="res://assets/materials/explosion.tres" id="1_17npe"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_3oo6d"]
@@ -67,6 +68,7 @@ _data = {
 
 [node name="Explosion" type="Node3D"]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+script = ExtResource("1_7ype4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_3oo6d")
@@ -78,3 +80,5 @@ libraries = {
 &"": SubResource("AnimationLibrary_17npe")
 }
 autoplay = "explosion"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
