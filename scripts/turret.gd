@@ -28,7 +28,6 @@ func shoot():
 	if !shoot_cooldown_timer.is_stopped():
 		return
 		
-	print("shooting bullet")
 	#create bullet object
 	var instance := bullet.instantiate()
 	instance.set_start_state(bullet_origin.global_position,

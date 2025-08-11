@@ -6,6 +6,8 @@ var spawn_rot : Vector3
 var proj_speed : float
 var init_bounces : int
 var current_bounces : int
+@onready var explosion := preload("res://scenes/bullet_explosion.tscn")
+@onready var scene_root := get_tree().root.get_child(0)
 
 # initialize function
 func set_start_state(spos : Vector3, srot : Vector3, data : BulletData) -> void:
@@ -48,8 +50,13 @@ func collide(other_collision_layer : int, collision_data : KinematicCollision3D)
 			print("collision layer:", other_collision_layer)
 			
 func destroy() -> void:
-	print("bullet destroy")
+	explode()
 	queue_free()
+	
+func explode() -> void:
+	var instance := explosion.instantiate()
+	instance.set_start_state(global_position)
+	scene_root.add_child.call_deferred(instance)
 	
 func bounce(collision_normal : Vector3) -> void:
 	velocity = velocity.bounce(collision_normal)
