@@ -11,7 +11,7 @@ var current_speed : float = 0.0
 @export var can_shoot : bool = true
 
 @onready var turretNode := $Turret
-@onready var player_tank_data = preload("res://data/player_tank_data.tres")
+@onready var tank_data: TankData = preload("res://data/player_tank_data.tres")
 
 @export_group("Input Actions")
 @export var input_left : String = "move_left"
@@ -32,20 +32,20 @@ func _physics_process(_delta: float) -> void:
 # sets player velocity based on state
 func compute_move() -> void:
 	if not can_move:
-		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
+		velocity = velocity.lerp(Vector3.ZERO, tank_data.deceleration)
 		return
 	
 	if can_sprint and Input.is_action_pressed(input_sprint):
-		current_speed = player_tank_data.boost_speed
+		current_speed = tank_data.boost_speed
 	else:
-		current_speed = player_tank_data.base_speed
+		current_speed = tank_data.base_speed
 	
 	var input_dir_vector := Input.get_vector(input_left, input_right, input_forward, input_back)
 	var new_move_dir_vector := Vector3(input_dir_vector.x, 0, input_dir_vector.y).normalized()
 	#new_move_dir_vector = new_move_dir_vector.rotated(Vector3.UP,-PI/4) #rotate movement 45 degrees to account for isometric camera view
 	
 	if not new_move_dir_vector: #if no data received from Inputs
-		velocity = velocity.lerp(Vector3.ZERO, player_tank_data.deceleration)
+		velocity = velocity.lerp(Vector3.ZERO, tank_data.deceleration)
 		return
 	
 	compute_rotation(new_move_dir_vector)
@@ -68,7 +68,7 @@ func compute_rotation(move_dir: Vector3) -> void:
 		relative_dir_change = (PI if relative_dir_change > 0 else -PI) - relative_dir_change
 		is_reversing = !is_reversing
 	
-	rotate_y(relative_dir_change * player_tank_data.turn_speed)
+	rotate_y(relative_dir_change * tank_data.turn_speed)
 
 func compute_shoot() -> void:
 	if can_shoot and Input.is_action_pressed("PrimaryAttack"):
