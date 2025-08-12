@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://d2ftqncm5trt2"]
+
+[ext_resource type="Script" uid="uid://o3ym7775eam2" path="res://scripts/turret_tank.gd" id="1_plekc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_plekc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2oemv"]
+albedo_color = Color(0.788606, 0.466058, 0.288824, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_v2rot"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7jri8"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7o0qg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_daacl"]
+albedo_color = Color(0.788235, 0.466667, 0.290196, 1)
+
+[node name="TurretTank" type="Node3D"]
+script = ExtResource("1_plekc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_plekc")
+surface_material_override/0 = SubResource("StandardMaterial3D_2oemv")
+
+[node name="Turret" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, 0)
+mesh = SubResource("SphereMesh_v2rot")
+surface_material_override/0 = SubResource("StandardMaterial3D_7jri8")
+
+[node name="Cannon" type="MeshInstance3D" parent="MeshInstance3D/Turret"]
+transform = Transform3D(-3.55271e-15, -1.96701e-08, 0.25, 0.2625, -1.96701e-08, -8.88178e-16, 1.14742e-08, 0.45, 1.09278e-08, 0, 0.18, -0.491)
+mesh = SubResource("CylinderMesh_7o0qg")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_daacl")
+
+[node name="BulletOrigin" type="Node3D" parent="MeshInstance3D/Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.190675, -0.938815)
+
+[node name="ShootCooldown" type="Timer" parent="MeshInstance3D/Turret"]
+process_callback = 0
+one_shot = true
